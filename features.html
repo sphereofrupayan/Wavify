@@ -37,7 +37,7 @@ nav ul li.brand {
 }
 
 nav ul li.nav-links {
-  margin-left: auto; /* pushes links to the right */
+  margin-left: auto; 
   display: flex;
   gap: 8px;
 }
@@ -55,10 +55,10 @@ nav ul li.nav-links a:hover {
   color: #1da9c0;
 }
 
-/* Mobile: keep it natural, don't push to opposite side */
+
 @media (max-width: 768px) {
   nav ul li.nav-links {
-    margin-left: 12px; /* sits right after brand, no push */
+    margin-left: 12px;
   }
 }
 .brand {
@@ -87,27 +87,26 @@ nav ul li.nav-links a:hover {
   object-fit: cover;
   z-index: -1;
 }
-        /* Reset */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Body */
 body {
   background: whitesmoke;
   font-family: sans-serif;
   overflow-x: hidden;
 }
 
-/* Section (no background) */
+
 .carousel-section {
   width: 100%;
   padding: 30px 0;
 }
 
-/* Row container */
+
 .carousel-outer {
   width: 75%;
   margin: auto;
@@ -115,7 +114,7 @@ body {
   position: relative;
 }
 
-/* Soft fade edges */
+
 .carousel-outer::before,
 .carousel-outer::after {
   content: '';
@@ -137,28 +136,27 @@ body {
   background: linear-gradient(to left, #0d0d0f, transparent);
 }
 
-/* Track */
+
 .carousel-track {
   display: flex;
-  gap: 22px;                  /* compact spacing */
+  gap: 22px;                  
   width: max-content;
   animation: scrollRow 20s linear infinite;
 }
 
-/* Pause on hover */
+
 .carousel-outer:hover .carousel-track {
   animation-play-state: paused;
 }
 
-/* Infinite scroll */
 @keyframes scrollRow {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* Logo wrapper */
+
 .card-wrap {
-  width: 60px;               /* smaller size */
+  width: 60px;             
   height: 60px;
   flex-shrink: 0;
   display: flex;
@@ -166,7 +164,7 @@ body {
   justify-content: center;
 }
 
-/* Logo image */
+
 .card-wrap img {
   width: 100%;
   height: 100%;
@@ -175,7 +173,7 @@ body {
   transition: transform 0.25s ease;
 }
 
-/* Hover effect */
+
 .card-wrap:hover img {
   transform: scale(1.12);
 }
@@ -187,30 +185,22 @@ body {
 
 .heading h2 {
   font-size: 4rem;
-  font-family: 'Orbitron', 'Montserrat', sans-serif; /* futuristic font */
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
   font-weight: 700;
-
-  /* Maximum spacing between letters */
   letter-spacing: 12px;
-
-  /* Bright animated gradient */
   background: linear-gradient(90deg, #ff00ff, #00ffff, #00ff88, #ffea00);
   background-size: 300%;
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  /* Smooth animation instead of pulse */
   animation: gradientMove 4s linear infinite, zoomIn 1.5s ease forwards;
 }
 
-/* Moving gradient animation */
+
 @keyframes gradientMove {
   0% { background-position: 0%; }
   100% { background-position: 300%; }
 }
 
-/* Clean zoom entry animation */
 @keyframes zoomIn {
   0% {
     transform: scale(0.5);
@@ -229,26 +219,20 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: #ffffffcc;
   letter-spacing: 2px;
-
   overflow: hidden;
-
-  /* REMOVE this */
-  /* white-space: nowrap; */
-
-  white-space: normal;   /* allow wrapping */
+  white-space: normal;
   text-align: center;
-
   width: 100%;
 }
 @media (max-width: 768px) {
   .heading h3 {
     white-space: normal;
     width: 100%;
-    animation: none;   /* stop typing effect */
+    animation: none;
   }
 }
 
-/* smooth continuous typing → reset */
+
 @keyframes typing {
   0% { width: 0 }
   100% { width: 100% }
@@ -261,12 +245,12 @@ body {
 }
 
 .logo {
-  text-align: center;   /* center horizontally */
+  text-align: center;  
   margin-bottom: 0;
 }
 
 .logo img {
-  width: 400px;         /* medium size */
+  width: 400px;       
   height: auto;
   display: inline-block;
 }
