@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    console.log("Welcome to Spotify");
+let songIndex=0;
+let audioElement=new Audio('Songs/letmeloveyou.mp3');
+let masterplay=document.getElementById('masterplay');
+let myProgressBar=document.getElementById('myProgressBar');
+let gif=document.getElementById('gif');
+let masterSongname=document.getElementById('masterSongname');
+let songitems=Array.from(document.getElementsByClassName('songItem'));
+let songs=[
+    {songName: "Let Me Love You",filePath: "Songs/letmeloveyou.mp3",coverPath:"Songimages/Letmeloveyou.jpg"},
+    {songName: "Memories",filePath: "Songs/memories.mp3",coverPath:"Songimages/memories.jpg"},
+    {songName: "Shape of You",filePath: "Songs/shapeofyou.mp3",coverPath:"Songimages/shapeofyou.jpg"},
+    {songName: "Perfect",filePath: "Songs/perfect.mp3",coverPath:"Songimages/perfect.jpg"},
+    {songName: "Believer",filePath: "Songs/believer.mp3",coverPath:"Songimages/believer.jpg"},
+    {songName: "Night Changes",filePath: "Songs/nightchanges.mp3",coverPath:"Songimages/nightchanges.jpg"},
+    {songName: "Closer",filePath: "Songs/closer.mp3",coverPath:"Songimages/closer.jpg"},
+    {songName: "A Thousand Years",filePath: "Songs/thousandyears.mp3",coverPath:"Songimages/thousandyears.jpg"},
+    {songName: "End of Begining",filePath: "Songs/endofbegin.mp3",coverPath:"Songimages/endofbegining.jpg"},
+    {songName: "Lutt Le Gaya",filePath: "Songs/lutlegaya.mp3",coverPath:"Songimages/luttlegaya.jpg"},
+    {songName: "Run down the city - (Monica)",filePath: "Songs/rundownthecity.mp3",coverPath:"Songimages/rundownthecity.jpg"},
+    {songName: "Beedi Jalaile",filePath: "Songs/Beedi.mp3",coverPath:"Songimages/beedi.jpg"},
+    {songName: "Bairan",filePath: "Songs/Bairan.mp3",coverPath:"Songimages/bairan.jpg"},
+    {songName: "Mainu Ishq Tera Lae Dooba",filePath: "Songs/LaeDooba.mp3",coverPath:"Songimages/LaeDooba.jpg"},
+    {songName: "Zalima",filePath: "Songs/Zalima.mp3",coverPath:"Songimages/Zalima.jpg"},
+    {songName: "Ae Ajnabee",filePath: "Songs/Ae Ajnabee.mp3",coverPath:"Songimages/Ae Ajnabee.jpg"},
+    {songName: "Har Har Gange",filePath: "Songs/Har Har Gange.mp3",coverPath:"Songimages/Har Har Gange.jpg"},
+    {songName: "Arz Kiya Hai",filePath: "Songs/Arz Kiya Hai.mp3",coverPath:"Songimages/Arz Kiya Hai.jpg"},
+    {songName: "Deva Deva",filePath: "Songs/Deva Deva.mp3",coverPath:"Songimages/Deva Deva.jpg"},
+    {songName: "Aaoge Tum Kabhi",filePath: "Songs/Aaoge Tum Kabhi.mp3",coverPath:"Songimages/Aaoge Tum Kabhi.jpg"},
+    {songName: "Hum Tere Pyar Mein",filePath: "Songs/Hum Tere Pyar Mein.mp3",coverPath:"Songimages/Hum Tere Pyar Mein.jpg"},
+    {songName: "Ure Geche-Lyrical",filePath: "Songs/Uregeche.mp3",coverPath:"Songimages/Uregeche.jpg"},
+    {songName: "Ore Manwa Re",filePath: "Songs/oremanware.mp3",coverPath:"Songimages/oremanware.jpg"},
+]
+songitems.forEach((element, i) => {
+  const img = element.querySelector("img");
+  if (img && songs[i]) {
+    console.log(element,i);
+    img.src = songs[i].coverPath;
+    element.getElementsByClassName("songName")[0].innerText=songs[i].songName;
+  }
+});
+
+masterplay.addEventListener('click',()=>{
+    if(audioElement.paused || audioElement.currentTime<=0){
+        audioElement.play();
+        masterplay.src="pause-solid.png";
+        gif.style.opacity=1;
+    }else{
+        audioElement.pause();
+        masterplay.src="play-solid.png";
+        gif.style.opacity=0;
+    }
+})
+
+audioElement.addEventListener('timeupdate',()=>{
+    console.log('timeupdate');
+    progress=parseInt((audioElement.currentTime/audioElement.duration)*100);
+    myProgressBar.value=progress;
+})
+myProgressBar.addEventListener('change',()=>{
+    audioElement.currentTime=((myProgressBar.value * audioElement.duration)/100);
+})
+const makeAllPlays = () => {
+  Array.from(document.getElementsByClassName('play')).forEach((element) => {
+    element.src = "play-solid.png";
+  });
+};
+
+Array.from(document.getElementsByClassName('play')).forEach((element) => {
+  element.addEventListener('click', (e) => {
+    const btn = e.target;
+    const index = parseInt(btn.id);
+
+    
+    if (songIndex === index && !audioElement.paused) {
+      audioElement.pause();
+      btn.src = "play-solid.png";
+      masterplay.src = "play-solid.png";
+      gif.style.opacity = 0;
+      return;
+    }
+
+    
+    makeAllPlays();
+    songIndex = index;
+
+    audioElement.src = songs[songIndex].filePath;
+    audioElement.currentTime = 0;
+    audioElement.play();
+
+    btn.src = "pause-solid.png";
+    masterplay.src = "pause-solid.png";
+    gif.style.opacity = 1;
+
+    
+    if (typeof masterSongname !== "undefined") {
+      masterSongname.innerText = songs[songIndex].songName;
+    }
+  });
+});
+document.querySelector('.next').addEventListener('click', () => {
+    songIndex = (songIndex + 1) % songs.length;  
+    masterSongname.innerText=songs[songIndex].songName;  
+    audioElement.src = songs[songIndex].filePath;
+    audioElement.currentTime = 0;
+    audioElement.play();
+    
+    masterplay.src = "pause-solid.png";
+    gif.style.opacity = 1;
+
+    makeAllPlays();
+    const currentBtn = document.getElementById(songIndex.toString());
+    if (currentBtn) currentBtn.src = "pause-solid.png";
+});
+document.querySelector('.previous').addEventListener('click', () => {
+    songIndex = songIndex <= 0 ? songs.length - 1 : songIndex - 1;  
+    masterSongname.innerText=songs[songIndex].songName;
+    audioElement.src = songs[songIndex].filePath;
+    audioElement.currentTime = 0;
+    audioElement.play();
+
+    masterplay.src = "pause-solid.png";
+    gif.style.opacity = 1;
+  
+
+    makeAllPlays();
+    const currentBtn = document.getElementById(songIndex.toString());
+    if (currentBtn) currentBtn.src = "pause-solid.png";
+});
+audioElement.addEventListener('ended', () => {
+    songIndex = (songIndex + 1) % songs.length;
+
+    masterSongname.innerText = songs[songIndex].songName;
+    audioElement.src = songs[songIndex].filePath;
+    audioElement.currentTime = 0;
+    audioElement.play();
+
+    masterplay.src = "pause-solid.png";
+    gif.style.opacity = 1;
+
+    makeAllPlays();
+    const currentBtn = document.getElementById(songIndex.toString());
+    if (currentBtn) currentBtn.src = "pause-solid.png";
+});
+  </script>
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go with the Trend!!</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="bg"></div>
+<div class="bg bg2"></div>
+<div class="bg bg3"></div>
+
+</div>
+    <nav>
+        <ul>
+            <li class="brand"><img src="download-removebg-preview.png" alt="Spotify">RC_Cloud</li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="features.html">Features</a></li>
+        </ul>
+    </nav>
+
+
+      <header class="hero">
+
+  </header>
+
+  <section class="carousel-section">
+    <div class="carousel-outer">
+      <div class="carousel-track" id="track"></div>
+    </div>
+  </section>
+
+
+  
+<div class="search-section">
+    <div class="lang-group">    
+        <button class="btn-glass">Hindi</button>
+        <button class="btn-glass">English</button>
+        <button class="btn-glass">Bengali</button>
+    </div>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Type here to Search">
+        <button class="search-btn">Search</button>
+    </div>
+</div>
+
+
+
+
+    <div class="container">
+
+        <div class="songList">
+            <h1>Best of NCS - No Copyright Sounds</h1>
+            <div class="songitemcontainer">
+                <div class="songItem">
+                    <img src="Songimages/Letmeloveyou.jpg" alt="1">
+                    <span class="songName English">Let Me Love You</span>
+                    <span class="songlistplay"><span>03:25 <img src="play-solid.png" id="0" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/memories.jpg" alt="2">
+                    <span class="songName English">Memories</span>
+                    <span class="songlistplay"><span>03:15 <img src="play-solid.png" id="1" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/shapeofyou.jpg" alt="2">
+                    <span class="songName English">Shape of You</span>
+                    <span class="songlistplay"><span>04:23 <img src="play-solid.png" id="2" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/perfect.jpg" alt="2">
+                    <span class="songName English">Perfect</span>
+                    <span class="songlistplay"><span>04:23 <img src="play-solid.png" id="3" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/believer.jpg" alt="2">
+                    <span class="songName English">Believer</span>
+                    <span class="songlistplay"><span>03:36 <img src="play-solid.png" id="4" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/nightchanges.jpg" alt="2">
+                    <span class="songName English">Night Changes</span>
+                    <span class="songlistplay"><span>03:46 <img src="play-solid.png" id="5" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/closer.jpg" alt="2">
+                    <span class="songName English">Closer</span>
+                    <span class="songlistplay"><span>04:21 <img src="play-solid.png" id="6" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/thousandyears.jpg" alt="2">
+                    <span class="songName English">A Thousand Years</span>
+                    <span class="songlistplay"><span>05:34 <img src="play-solid.png" id="7" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/endofbegining.jpg" alt="2">
+                    <span class="songName English">End of Begining</span>
+                    <span class="songlistplay"><span>02:39 <img src="play-solid.png" id="8" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/luttlegaya.jpg" alt="2">
+                    <span class="songName Hindi">Lutt Le Gaya</span>
+                    <span class="songlistplay"><span>04:13 <img src="play-solid.png" id="9" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/rundownthecity.jpg" alt="2">
+                    <span class="songName Hindi">Run down the City(Monica)</span>
+                    <span class="songlistplay"><span>02:20 <img src="play-solid.png" id="10" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/beedi.jpg" alt="2">
+                    <span class="songName Hindi">Beedi</span>
+                    <span class="songlistplay"><span>02:20 <img src="play-solid.png" id="11" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/bairan.jpg" alt="2">
+                    <span class="songName Hindi">Bairan</span>
+                    <span class="songlistplay"><span>02:29 <img src="play-solid.png" id="12" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/LaeDooba.jpg" alt="2">
+                    <span class="songName Hindi">Mainu Ishq Tera Lae Dooba</span>
+                    <span class="songlistplay"><span>05:08 <img src="play-solid.png" id="13" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Zalima.jpg" alt="2">
+                    <span class="songName Hindi">Zalima</span>
+                    <span class="songlistplay"><span>05:08 <img src="play-solid.png" id="14" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Ae Ajnabee.jpg" alt="2">
+                    <span class="songName Hindi">Ae Ajnabee</span>
+                    <span class="songlistplay"><span>04:19 <img src="play-solid.png" id="15" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Har Har Gange.jpg" alt="2">
+                    <span class="songName Hindi">Har Har Gange</span>
+                    <span class="songlistplay"><span>03:02 <img src="play-solid.png" id="16" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Arz Kiya Hai.jpg" alt="2">
+                    <span class="songName Hindi">Arz Kiya Hai</span>
+                    <span class="songlistplay"><span>04:50 <img src="play-solid.png" id="17" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Deva Deva.jpg" alt="2">
+                    <span class="songName Hindi">Deva Deva</span>
+                    <span class="songlistplay"><span>05:51 <img src="play-solid.png" id="18" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Aaoge Tum Kabhi.jpg" alt="2">
+                    <span class="songName Hindi">Aaoge Tum Kabhi</span>
+                    <span class="songlistplay"><span>05:51 <img src="play-solid.png" id="19" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Hum Tere Pyar Mein.jpg" alt="2">
+                    <span class="songName Hindi">Hum Tere Pyar Mein</span>
+                    <span class="songlistplay"><span>05:51 <img src="play-solid.png" id="20" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/Uregeche.jpg" alt="2">
+                    <span class="songName Bengali">Ure Geche-Lyrical</span>
+                    <span class="songlistplay"><span>04:05 <img src="play-solid.png" id="21" alt="PlayButton" class="play" ></span></span>
+                </div>
+                <div class="songItem">
+                    <img src="Songimages/oremanware.jpg" alt="2">
+                    <span class="songName Bengali">Ore Manwa re</span>
+                    <span class="songlistplay"><span>04:44 <img src="play-solid.png" id="22" alt="PlayButton" class="play" ></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="bottom">
+        <input type="range" name="range" id="myProgressBar" min="0" value="0" max="100">
+        <div class="icons">
+            <img src="backward-solid.png" alt="Backward" class="previous">
+            <img src="play-solid.png" alt="Pause" class="pause" id="masterplay">
+            <img src="forward-solid.png" alt="Forward" class="next">
+
+        </div>
+        <div class="songInfo">
+            <img src="Music GIF - Music - Discover & Share GIFs.gif" width="42px" class="gifmusic" id="gif"><span id="masterSongname">Let Me Love You-Justin Biber</span>
+        </div>
+    </div>
+    <footer class="footer">
+  <p class="footertextline">Listen to the most Trending songs &#33&#33</p>
+</footer>
+    
+</body>
+</html>
+
+</body>
+</html>
